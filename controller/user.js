@@ -6,9 +6,12 @@ const jwt = require("jsonwebtoken");
 const HttpError = require("../models/http-error");
 const { error } = require("console");
 const User = require("../models/users");
+const { startSession } = require("../models/users");
+const mongoose = require("mongoose");
 
 const getUsers = async (req, res, next) => {
   let users;
+
   try {
     users = await User.find({}, "-password");
   } catch (err) {
@@ -59,6 +62,10 @@ const signup = async (req, res, next) => {
     name, // name: name
     email,
     password: hashedPassword,
+    posts: [],
+    follow: [],
+    followers: [],
+    liked: [],
   });
 
   let token;
@@ -94,6 +101,7 @@ const signup = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
+
   let identifiedUser;
 
   try {
@@ -147,7 +155,7 @@ const login = async (req, res, next) => {
   }
 
   res.json({
-    userId: identifiedUser.id,
+    userId: identifiedUser._id,
     name: identifiedUser.name,
     email: identifiedUser.email,
     token: token,
@@ -155,6 +163,93 @@ const login = async (req, res, next) => {
   });
 };
 
+const addFollower = async (req, res, next) => {
+  const { userId, selfUserId } = req.body;
+
+  // TODO: SELF Exist
+  let self;
+  try {
+    self = await User.findById(selfUserId);
+  } catch (err) {
+    const error = new HttpError("Error Fetching user", 501);
+    return next(error);
+  }
+
+  if (!self) {
+    return next(new HttpError("Creator User not exist", 501));
+  }
+  // TODO: user to follow exist
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError(err, 501);
+    return next(error);
+  }
+
+  if (!user) {
+    return next(new HttpError("Error feateting user to follow", 501));
+  }
+
+  // TODO: Push follower to self
+
+  try {
+    const sesson = await mongoose.startSession();
+    sesson.startTransaction();
+    self.followers.push(user);
+    await self.save({ session: sesson });
+
+    user.follows.push(self);
+    await user.save({ session: sesson });
+    await sesson.commitTransaction();
+  } catch (err) {
+    const error = new HttpError(err, 500);
+    return next(error);
+  }
+
+  res.json({
+    userId: self._id,
+    followers: self.followers,
+  });
+};
+
+const removeFollower = async (req, res, next) => {
+  const { followedId, selfId } = req.body;
+
+  let self;
+  try {
+    self = await User.findById(selfId);
+  } catch (err) {
+    const error = new HttpError("Error fetching Self", 501);
+    return next(error);
+  }
+
+  if (!self) {
+    return next(new HttpError("Self not exist", 501));
+  }
+
+  let user;
+  try {
+    user = await User.findByIdAndUpdate(
+      followedId,
+      { $pull: { follows: self._id } },
+      { new: true }
+    );
+  } catch (err) {
+    const error = new HttpError("Not able to Unfollow the user", 500);
+    return next(error);
+  }
+
+  res.json({
+    // creatorId: authorId,
+    id: user._id,
+    self_id: self._id,
+    follows: user.follows,
+  });
+};
+
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
+exports.addFollower = addFollower;
+exports.removeFollower = removeFollower;

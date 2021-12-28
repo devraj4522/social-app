@@ -3,13 +3,21 @@ const uniqueValidator = require("mongoose-unique-validator");
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-  name: { type: String, required: true },
+const postSchema = new Schema({
+  title: { type: String, required: true },
   desc: { type: String },
-  image: { type: String, required: true },
+  image: { type: String },
   creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+  likes: [
+    {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+  ],
+  unilikes: [{ type: mongoose.Types.ObjectId, required: true, ref: "User" }],
 });
 
-userSchema.plugin(uniqueValidator);
+// uniqueValidator(postSchema);
 
-module.exports = mongoose.model("Post", userSchema);
+module.exports = mongoose.model("Post", postSchema);

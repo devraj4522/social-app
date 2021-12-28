@@ -11,8 +11,12 @@ const userSchema = new Schema({
     unique: true,
   },
   password: { type: String, required: true },
+  posts: [{ type: mongoose.Types.ObjectId, required: true, ref: "Post" }],
+  followers: [{ type: mongoose.Types.ObjectId, required: true, ref: "User" }],
+  follows: [{ type: mongoose.Types.ObjectId, required: true, ref: "User" }],
+  liked: [{ type: mongoose.Types.ObjectId, required: true, ref: "Post" }],
 });
 
-userSchema.plugin(uniqueValidator);
+// userSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model("User", userSchema);

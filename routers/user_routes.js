@@ -19,5 +19,7 @@ router.post(
 );
 
 router.post("/login/", userController.login);
+router.post("/follow/", userController.addFollower);
+router.put("/unfollow/", userController.removeFollower);
 
 module.exports = router;
