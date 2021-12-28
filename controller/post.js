@@ -14,8 +14,6 @@ const post = require("../models/post");
 const { title } = require("process");
 
 const createPost = async (req, res, next) => {
-  console.log(req.body);
-
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
@@ -127,7 +125,7 @@ const like = async (req, res, next) => {
 
 const unLike = async (req, res, next) => {
   const { unLikerId, postId } = req.body;
-
+  console.log(unLikerId);
   let unLiker;
   try {
     unLiker = await User.findById(unLikerId);
@@ -177,7 +175,7 @@ const getAllFollowingPost = async (req, res, next) => {
   // 61c761f133d3b710d6110259
   // const following = user.follows;
   const following = new mongoose.Types.ObjectId("61c83eae2d9458f044f8b5cd");
-  console.log(following);
+  // console.log(following);
   let allPosts = [];
   try {
     await Post.find({

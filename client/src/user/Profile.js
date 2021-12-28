@@ -20,8 +20,8 @@ const Profile = () => {
   }, [user, name]);
 
   return (
-    <>
-      <div className="container mt-5">
+    <div className="body mt-0 pt-5">
+      <div className="container ">
         <div className="row d-flex justify-content-center">
           <div className="col-md-7">
             <div className="card p-3 py-4">
@@ -48,27 +48,29 @@ const Profile = () => {
                 </div>
                 <ul className="social-list">
                   <li>
-                    <i className="fa fa-facebook"></i>
+                    <i className="fab fa-facebook"></i>
                   </li>
                   <li>
-                    <i className="fa fa-dribbble"></i>
+                    <i className="fab fa-dribbble"></i>
                   </li>
                   <li>
-                    <i className="fa fa-instagram"></i>
+                    <i className="fab fa-instagram"></i>
                   </li>
                   <li>
-                    <i className="fa fa-linkedin"></i>
+                    <i className="fab fa-linkedin"></i>
                   </li>
                   <li>
-                    <i className="fa fa-google"></i>
+                    <i className="fab fa-google"></i>
                   </li>
                 </ul>
                 <div className="buttons">
                   {" "}
                   <button className="btn btn-outline-primary px-4">
-                    Message
+                    Followers
                   </button>{" "}
-                  <button className="btn btn-primary px-4 ms-3">Contact</button>{" "}
+                  <button className="btn btn-primary px-4 ms-3">
+                    Following
+                  </button>{" "}
                 </div>
               </div>
             </div>
@@ -76,7 +78,7 @@ const Profile = () => {
         </div>
       </div>
       <FollowingCards />
-    </>
+    </div>
   );
 };
 

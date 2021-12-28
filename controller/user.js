@@ -165,7 +165,7 @@ const login = async (req, res, next) => {
 
 const addFollower = async (req, res, next) => {
   const { userId, selfUserId } = req.body;
-
+  console.log(userId, selfUserId);
   // TODO: SELF Exist
   let self;
   try {

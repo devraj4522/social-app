@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container">
+        <div className="container" style={{ maxWidth: "1100px" }}>
           <Link className="navbar-brand" to="/">
             Social App
           </Link>
@@ -48,6 +48,20 @@ const Header = () => {
                 <li className="nav-item">
                   <Link className="nav-link" to="/createpost">
                     Create Post
+                  </Link>
+                </li>
+              )}
+              {user && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">
+                    Profile
+                  </Link>
+                </li>
+              )}
+              {user && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/follow">
+                    Follow
                   </Link>
                 </li>
               )}

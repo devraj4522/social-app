@@ -22,23 +22,25 @@ const FollowingCards = () => {
           setclickedlike(null);
         });
     }
-  }, [clickedlike]);
+  }, []);
 
   return (
-    <div
-      className="my-5 container mx-auto"
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        listStyle: "none",
-        margin: 0,
-        padding: 0,
-        justifyContent: "left",
-      }}
-    >
-      {posts.map((post) => {
-        return <Card id={Card._id} {...post} />;
-      })}
+    <div className="body pt-5 mt-5">
+      <div
+        className="my-5 container mx-auto"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          listStyle: "none",
+          margin: 0,
+          padding: 0,
+          justifyContent: "left",
+        }}
+      >
+        {posts.map((post, key) => {
+          return <Card key={key} {...post} />;
+        })}
+      </div>
     </div>
   );
 };

@@ -7,6 +7,8 @@ import Signup from "./user/Signup";
 import { allActionTypes } from "./shared/reducer";
 import CreatePost from "./post/CreatePost";
 import Profile from "./user/Profile";
+import Home from "./user/Home";
+import Follow from "./user/Follow";
 
 const App = () => {
   const [{ user }, dispatch] = useContextValue();
@@ -26,9 +28,10 @@ const App = () => {
     return (
       <Routes>
         <Route path="/" element={<Header />}>
-          <Route index element={<h1>All Posts</h1>} />
+          <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
+          <Route path="follow" element={<Follow />} />
           <Route path="profile" element={<Profile />} />
           <Route path="createpost" element={<CreatePost />} />
         </Route>
