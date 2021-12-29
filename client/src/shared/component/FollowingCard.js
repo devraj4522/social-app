@@ -6,15 +6,15 @@ const FollowingCards = () => {
   const [{ user }, dispatch] = useContextValue();
   const [posts, setposts] = useState([]);
   const [clickedlike, setclickedlike] = useState(null);
-
+  console.log(user);
   useEffect(() => {
     if (user) {
       const form = new FormData();
-      form.append("userId", user.action.userId);
+      form.append("userId", user.action._id);
       fetch("http://localhost:5000/api/posts", {
         method: "post",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user.action.userId }),
+        body: JSON.stringify({ userId: user.action._id }),
       })
         .then((res) => res.json())
         .then((result) => {
@@ -37,9 +37,10 @@ const FollowingCards = () => {
           justifyContent: "left",
         }}
       >
-        {posts.map((post, key) => {
-          return <Card key={key} {...post} />;
-        })}
+        {posts &&
+          posts.map((post, key) => {
+            return <Card key={key} {...post} />;
+          })}
       </div>
     </div>
   );

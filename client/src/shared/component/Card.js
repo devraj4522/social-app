@@ -10,7 +10,7 @@ const Card = (props) => {
     if (props.likes) {
       const likes = props.likes;
       likes.forEach((element) => {
-        if (element == user.action.userId) {
+        if (element == user.action._id) {
           setLiked(true);
         }
       });
@@ -23,7 +23,7 @@ const Card = (props) => {
         method: "post",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          likerId: user.action.userId,
+          likerId: user.action._id,
           postId: props._id,
         }),
       })
@@ -41,7 +41,7 @@ const Card = (props) => {
         method: "put",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          unLikerId: user.action.userId,
+          unLikerId: user.action._id,
           postId: props._id,
         }),
       })

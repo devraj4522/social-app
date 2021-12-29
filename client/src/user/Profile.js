@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FollowingCards from "../shared/component/FollowingCard";
 import { useContextValue } from "../shared/contextProvider";
 import "./Profile.css";
@@ -36,7 +36,9 @@ const Profile = () => {
                 <span className="bg-secondary p-1 px-4 rounded text-white">
                   Pro
                 </span>
-                <h5 className="mt-2 mb-0">{name.toLocaleUpperCase()}</h5>{" "}
+                <h5 className="mt-2 mb-0">
+                  {name && name.toLocaleUpperCase()}
+                </h5>{" "}
                 <span>{email}</span>
                 <div className="px-4 mt-1">
                   <p className="fonts">
@@ -68,9 +70,9 @@ const Profile = () => {
                   <button className="btn btn-outline-primary px-4">
                     Followers
                   </button>{" "}
-                  <button className="btn btn-primary px-4 ms-3">
+                  <Link className="btn btn-primary px-4 ms-3" to="/following">
                     Following
-                  </button>{" "}
+                  </Link>{" "}
                 </div>
               </div>
             </div>

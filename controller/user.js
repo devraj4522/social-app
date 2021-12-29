@@ -24,6 +24,45 @@ const getUsers = async (req, res, next) => {
   res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
+const follwing = async (req, res, next) => {
+  const { userId } = req.body;
+
+  if (!userId) return next(new HttpError("Not get value from source"));
+  let usersId = [];
+  try {
+    let user = await User.findById(userId, "-password");
+    user.follows ? (usersId = user.follows) : res.json({ users: [] });
+    // console.log(user);
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching users failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+
+  usersId = usersId.map((id) => id._id.toString());
+  console.log("usersId");
+  // console.log(usersId);
+  let users = [];
+  // console.log(usersId);
+  try {
+    users = await User.find({ _id: { $in: usersId } });
+
+    console.log(users.length);
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching users failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+
+  console.log(users.length);
+  // console.log(user);
+  res.json({ users });
+};
+
 const signup = async (req, res, next) => {
   // input is invalid
   const errors = validationResult(req);
@@ -101,7 +140,7 @@ const signup = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
-
+  // console.log(req.body);
   let identifiedUser;
 
   try {
@@ -196,10 +235,10 @@ const addFollower = async (req, res, next) => {
   try {
     const sesson = await mongoose.startSession();
     sesson.startTransaction();
-    self.followers.push(user);
+    self.follows.push(user);
     await self.save({ session: sesson });
 
-    user.follows.push(self);
+    user.followers.push(self);
     await user.save({ session: sesson });
     await sesson.commitTransaction();
   } catch (err) {
@@ -253,3 +292,4 @@ exports.signup = signup;
 exports.login = login;
 exports.addFollower = addFollower;
 exports.removeFollower = removeFollower;
+exports.follwing = follwing;

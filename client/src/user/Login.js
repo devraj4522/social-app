@@ -23,9 +23,13 @@ const Login = () => {
     data.append("password", password);
     await fetch("http://localhost:5000/api/users/login", {
       method: "post",
-      body: data,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email, password: password }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Error in login");
+        else return res.json();
+      })
       .then((data) => {
         console.log(data);
         localStorage.setItem("token", JSON.stringify(data.token));
